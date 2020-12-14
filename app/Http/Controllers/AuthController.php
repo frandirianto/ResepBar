@@ -6,23 +6,24 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
+use App\Http\Resources\UserResource;
 
 class AuthController extends Controller
 {
     public function register(Request $request){      
         $request = $request->data;
-
+        
         $user = new User([
-            'name' => $request->fullname,
-            'username' => $request->username,
-            'email' => $request->email,
-            'password' => bcrypt($request->password)
+            'name' => $request["fullname"],
+            'username' => $request{"username"},
+            'email' => $request["email"],
+            'password' => bcrypt($request["password"])
         ]);
 
         $user->save();
         
         return response()->json([
-            'message' => 'Successfully created user!'
+            'message' => 'Successfully Registered Account'
         ], 201);
     }
 
@@ -38,6 +39,7 @@ class AuthController extends Controller
                 'message' => 'Unauthorized'
             ], 401);
         }
+        
         else if(Auth::attempt($credentials)){
             $user = Auth::user();
             
@@ -61,11 +63,12 @@ class AuthController extends Controller
     public function logout(Request $request){
         $request->user()->token()->revoke();
         return response()->json([
-            'message' => 'Successfully logged out'
+            'message' => 'Successfully Logged Out'
         ]);
     }
   
     public function user(Request $request){
-        return response()->json($request->user());
+        $data = new UserResource($request->user());
+        return response()->json(['data'=>$data],201);
     }
 }

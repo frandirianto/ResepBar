@@ -15,7 +15,10 @@ class CreateRecipeTagsTable extends Migration
     {
         Schema::create('recipe_tags', function (Blueprint $table) {
             $table->bigIncrements('id');
-            
+            $table->unsignedBigInteger('recipe_id');
+            $table->unsignedBigInteger('tag_id');
+            $table->foreign('recipe_id')->references('id')->on('recipes')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('tag_id')->references('id')->on('tags')->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
         });
     }

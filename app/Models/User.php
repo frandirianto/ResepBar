@@ -42,4 +42,12 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function recipes(){
+        return $this->hasMany('App\Models\Recipe');
+    }
+
+    public function saveRecipes(){
+        return $this->hasMany('App\Models\SaveRecipe');
+    }
 }

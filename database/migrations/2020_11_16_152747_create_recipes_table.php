@@ -15,11 +15,16 @@ class CreateRecipesTable extends Migration
     {
         Schema::create('recipes', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('category_id');
             $table->string('name');
             $table->longText('description');
+            $table->longText('ingredient');
             $table->longText('guide');
-            $table->longText('category');
-            $table->longText('photo');
+            $table->longText('photo'); 
+            $table->foreign('user_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('category_id')->references('id')->on('categories')->onUpdate('cascade')->onDelete('cascade');
+           
             $table->timestamps();
         });
     }

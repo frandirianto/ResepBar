@@ -8,4 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Review extends Model
 {
     use HasFactory;
+
+    public function recipe(){
+        return $this->belongsTo('App\Models\Recipe');
+    }
 }
